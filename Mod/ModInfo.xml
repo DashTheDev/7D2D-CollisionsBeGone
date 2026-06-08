@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xml>
+	<Name value="CollisionsBeGone"/>
+	<Author value="DashTheDev"/>
+	<DisplayName value="Collisions Be Gone"/>
+	<Description value="Removal of various collisions to improve player experience."/>
+	<Version value="1.0.0"/>
+</xml>
