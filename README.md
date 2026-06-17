@@ -8,7 +8,7 @@
 A [7 Days to Die](https://store.steampowered.com/app/251570/7_Days_to_Die/) mod that disables various colliders to improve the player experience.
 
 - Disables collisions between players, allowing them to pass through each other
-- `COMING SOON` Disables vehicle collisions between players
+- Disables collisions between player vehicles. Again, allowing them to pass through each other
 - `COMING SOON` Reduces environment collisions for vehicles
 
 ## Installation
