@@ -2,13 +2,15 @@
 
 public class CollisionsBeGoneConfig
 {
-    public bool IsEnabled = true;
+    public bool IsEnabled { get; set; } = true;
 
 #if DEBUG
-    public bool IsDebug = true;
+    public bool IsDebug { get; set; } = true;
 #else
-    public bool IsDebug;
+    public bool IsDebug { get; set; }
 #endif
 
-    public bool DisablePlayerCollisions = true;
+    public bool DebugTranspilers { get; set; }
+    public bool DisablePlayerCollisions { get; set; } = true;
+    public bool DisablePlayerVehicleCollisions { get; set; } = true;
 }

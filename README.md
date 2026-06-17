@@ -12,7 +12,10 @@ A [7 Days to Die](https://store.steampowered.com/app/251570/7_Days_to_Die/) mod 
 - `COMING SOON` Reduces environment collisions for vehicles
 
 ## Installation
-Download the [latest release](https://github.com/DashTheDev/7D2D-CollisionsBeGone/releases/latest), unzip and drop the `CollisionsBeGone` folder into your game's `Mods` directory.
+Download the [latest release](https://github.com/DashTheDev/7D2D-CollisionsBeGone/releases/latest), unzip and drop the `CollisionsBeGone` folder into your game's `Mods` directory.\
+
+> [!WARNING]
+> This mod must be installed on both the server and the client to function properly!
 
 ## Development Setup
 1. Ensure you have [Visual Studio](https://visualstudio.microsoft.com/) and [7D2D](https://store.steampowered.com/app/251570/7_Days_to_Die/) installed

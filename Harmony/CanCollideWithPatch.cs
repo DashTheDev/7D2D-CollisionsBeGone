@@ -1,6 +1,4 @@
-﻿using CollisionsBeGone;
-using HarmonyLib;
-using UnityEngine;
+﻿using HarmonyLib;
 
 namespace CollisionsBeGone;
 

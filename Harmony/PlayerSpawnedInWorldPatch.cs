@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using HarmonyLib;
-using UnityEngine;
+﻿using HarmonyLib;
 
 namespace CollisionsBeGone;
 
@@ -9,7 +7,7 @@ public class PlayerSpawnedInWorldPatch
 {
     private static void Postfix(GameManager __instance, ClientInfo _cInfo, RespawnType _respawnReason, Vector3i _pos, int _entityId)
     {
-        Utility.LogLine($"GameManager.PlayerSpawnedInWorld {{ Type: {_respawnReason} }}");
+        GeneralUtility.LogLine($"GameManager.PlayerSpawnedInWorld {{ Type: {_respawnReason} }}");
 
         if (!CollisionsBeGoneMod.Config.DisablePlayerCollisions)
         {
@@ -23,21 +21,11 @@ public class PlayerSpawnedInWorldPatch
             return;
         }
 
-        foreach (EntityPlayer foundPlayer in __instance.World.Players.list)
+        if (respawnedPlayer.isEntityRemote)
         {
-            if (respawnedPlayer.entityId == foundPlayer.entityId)
-            {
-                continue;
-            }
-
-            if (foundPlayer.IsDead())
-            {
-                continue;
-            }
-
-            Utility.IgnoreCollisionsBetweenPlayers(respawnedPlayer, foundPlayer);
-            Utility.ResetPlayerPhysicsBodyCollisionLayersToDefault(respawnedPlayer);
-            Utility.LogLine($"Disabled player collisions between {respawnedPlayer.PlayerDisplayName} and {foundPlayer.PlayerDisplayName}");
+            CollisionUtility.ResetPlayerPhysicsBodyCollisionLayersToDefault(respawnedPlayer);
         }
+
+        CollisionUtility.IgnoreCollisionsBetweenPlayerAndAllOtherPlayers(respawnedPlayer);
     }
 }
