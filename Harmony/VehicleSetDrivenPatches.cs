@@ -1,19 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using UnityEngine;
 
 namespace CollisionsBeGone;
 
 [HarmonyPatch(typeof(EntityVehicle), nameof(EntityVehicle.SetVehicleDriven))]
-public class VehicleSetDrivenPatch
+public class VehicleSetDrivenPatches
 {
+    private static void Postfix(EntityVehicle __instance)
+    {
+        if (!CollisionsBeGoneMod.Config.PreventVehicleExitOnOverlap)
+        {
+            return;
+        }
+
+        if (__instance.AttachedMainEntity == null)
+        {
+            VehicleOverlapTrigger.Detach(__instance);
+        }
+        else if (!__instance.isEntityRemote)
+        {
+            VehicleOverlapTrigger.Attach(__instance);
+        }
+    }
+
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         bool patched = false;
         List<CodeInstruction> codes = [.. instructions];
 
-        GeneralUtility.LogTranspilerBefore(nameof(VehicleSetDrivenPatch), codes);
+        GeneralUtility.LogTranspilerBefore(nameof(VehicleSetDrivenPatches), codes);
 
         for (int i = 0; i < codes.Count; i++)
         {
@@ -34,7 +52,7 @@ public class VehicleSetDrivenPatch
                 new(ReadableOpCodes.LoadArgument0),
 
                 // Call method: VehicleSetDrivenPatch.GetCollisionLayer(vehicle)
-                new(ReadableOpCodes.CallMethod, AccessTools.Method(typeof(VehicleSetDrivenPatch), nameof(GetCollisionLayer)))
+                new(ReadableOpCodes.CallMethod, AccessTools.Method(typeof(VehicleSetDrivenPatches), nameof(GetCollisionLayer)))
             ];
 
             codes.RemoveAt(i);
@@ -44,8 +62,8 @@ public class VehicleSetDrivenPatch
             break;
         }
 
-        GeneralUtility.LogLine($"{nameof(VehicleSetDrivenPatch)} Transpiler patch {(patched ? "was" : "was NOT")} applied!");
-        GeneralUtility.LogTranspilerAfter(nameof(VehicleSetDrivenPatch), codes);
+        GeneralUtility.LogLine($"{nameof(VehicleSetDrivenPatches)} Transpiler patch {(patched ? "was" : "was NOT")} applied!");
+        GeneralUtility.LogTranspilerAfter(nameof(VehicleSetDrivenPatches), codes);
 
         return codes;
     }

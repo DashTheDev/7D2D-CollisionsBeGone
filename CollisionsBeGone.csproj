@@ -38,13 +38,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Data\ReadableOpCodes.cs" />
-    <Compile Include="Harmony\VehicleSetDrivenPatch.cs" />
+    <Compile Include="Extensions\PlayerExtensions.cs" />
+    <Compile Include="Harmony\EntitySendDetachPatch.cs" />
+    <Compile Include="Data\VehicleOverlapTrigger.cs" />
+    <Compile Include="Harmony\VehicleSetDrivenPatches.cs" />
     <Compile Include="Harmony\CanCollideWithPatch.cs" />
     <Compile Include="Harmony\PlayerSpawnedInWorldPatch.cs" />
     <Compile Include="Mod\Init.cs" />
     <Compile Include="Mod\Config.cs" />
     <Compile Include="Utility\CollisionUtility.cs" />
     <Compile Include="Utility\GeneralUtility.cs" />
+    <Compile Include="Utility\LocalisationUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Mod\ModInfo.xml" />
@@ -52,14 +56,19 @@
       <Link>ModInfo.xml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="README.md" />
+    <None Include="Mod\Localization.txt" />
+    <None Include="Mod\Localization.txt">
+      <Visible>false</Visible>
+      <Link>Config\Localization.txt</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="README.md" />
     <None Include="Build.props" />
     <None Include="Build.targets" />
     <None Include="Local.props" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

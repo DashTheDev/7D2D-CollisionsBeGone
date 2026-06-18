@@ -7,8 +7,6 @@ public class PlayerSpawnedInWorldPatch
 {
     private static void Postfix(GameManager __instance, ClientInfo _cInfo, RespawnType _respawnReason, Vector3i _pos, int _entityId)
     {
-        GeneralUtility.LogLine($"GameManager.PlayerSpawnedInWorld {{ Type: {_respawnReason} }}");
-
         if (!CollisionsBeGoneMod.Config.DisablePlayerCollisions)
         {
             return;

@@ -1,0 +1,2 @@
+Key,English
+moveAwayMsg,Move away from other players before exiting
