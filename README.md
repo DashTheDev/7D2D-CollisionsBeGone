@@ -9,6 +9,7 @@ A [7 Days to Die](https://store.steampowered.com/app/251570/7_Days_to_Die/) mod 
 
 - Disables collisions between players, allowing them to pass through each other
 - Prevents player-ridden vehicles from colliding with each other
+- Projectiles can now pass through other players
 - `COMING SOON` Reduces environment collisions for vehicles
 
 ## Installation
