@@ -28,58 +28,23 @@ public class VehicleSetDrivenPatches
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        bool patched = false;
         List<CodeInstruction> codes = [.. instructions];
-
         GeneralUtility.LogTranspilerBefore(nameof(VehicleSetDrivenPatches), codes);
 
-        for (int i = 0; i < codes.Count; i++)
-        {
-            // Only interested in subset of code (50 instructions in)
-            if (i < 50)
-            {
-                continue;
-            }
+        List<CodeInstruction> replacementInstructions =
+        [
+            // Prepare arg1: this (entityVehicle)
+            new(ReadableOpCodes.LoadArgument0),
 
-            if (codes[i].opcode != ReadableOpCodes.LoadSmallInt || Convert.ToInt32(codes[i].operand) != CollisionUtility.PhysicsCollisionLayer)
-            {
-                continue;
-            }
+            // Call method: CollisionUtility.GetVehicleCollisionLayer(vehicle)
+            new(ReadableOpCodes.CallMethod, AccessTools.Method(typeof(CollisionUtility), nameof(CollisionUtility.GetVehicleCollisionLayer)))
+        ];
 
-            List<CodeInstruction> replacementInstructions =
-            [
-                // Prepare arg1: this (entityVehicle)
-                new(ReadableOpCodes.LoadArgument0),
+        // Code 53 is load int constant 21 (Physics layer)
+        codes.RemoveAt(53);
+        codes.InsertRange(53, replacementInstructions);
 
-                // Call method: VehicleSetDrivenPatch.GetCollisionLayer(vehicle)
-                new(ReadableOpCodes.CallMethod, AccessTools.Method(typeof(VehicleSetDrivenPatches), nameof(GetCollisionLayer)))
-            ];
-
-            codes.RemoveAt(i);
-            codes.InsertRange(i, replacementInstructions);
-
-            patched = true;
-            break;
-        }
-
-        GeneralUtility.LogLine($"{nameof(VehicleSetDrivenPatches)} Transpiler patch {(patched ? "was" : "was NOT")} applied!");
         GeneralUtility.LogTranspilerAfter(nameof(VehicleSetDrivenPatches), codes);
-
         return codes;
-    }
-
-    private static int GetCollisionLayer(EntityVehicle vehicle)
-    {
-        if (!CollisionsBeGoneMod.Config.DisablePlayerVehicleCollisions)
-        {
-            return CollisionUtility.PhysicsCollisionLayer;
-        }
-
-        if (vehicle.AttachedMainEntity == null || !vehicle.AttachedMainEntity.isEntityRemote)
-        {
-            return CollisionUtility.PhysicsCollisionLayer;
-        }
-
-        return CollisionUtility.DefaultCollisionLayer;
     }
 }

@@ -12,7 +12,7 @@ public class VehicleOverlapTrigger : MonoBehaviour
     {
         Detach(vehicle);
 
-        GameObject rootObj = new GameObject(nameof(VehicleOverlapTrigger));
+        GameObject rootObj = new(nameof(VehicleOverlapTrigger));
         rootObj.transform.SetParent(vehicle.vehicleRB.transform);
         rootObj.transform.localPosition = Vector3.zero;
         rootObj.transform.localRotation = Quaternion.identity;
@@ -32,7 +32,7 @@ public class VehicleOverlapTrigger : MonoBehaviour
                 continue;
             }
 
-            GameObject colObj = new GameObject($"Trigger_{col.name}");
+            GameObject colObj = new($"Trigger_{col.name}");
             colObj.transform.SetParent(col.transform);
             colObj.transform.localPosition = Vector3.zero;
             colObj.transform.localRotation = Quaternion.identity;
@@ -77,9 +77,9 @@ public class VehicleOverlapTrigger : MonoBehaviour
         }
     }
 
-    internal void TriggerEntered(Collider other)
+    internal void TriggerEntered(Collider otherCollider)
     {
-        if (other.gameObject.layer != CollisionUtility.DefaultCollisionLayer)
+        if (!IsRemotePlayerCollider(otherCollider))
         {
             return;
         }
@@ -87,14 +87,29 @@ public class VehicleOverlapTrigger : MonoBehaviour
         CollidersInTriggerCount++;
     }
 
-    internal void TriggerExited(Collider other)
+    internal void TriggerExited(Collider otherCollider)
     {
-        if (other.gameObject.layer != CollisionUtility.DefaultCollisionLayer)
+        if (!IsRemotePlayerCollider(otherCollider))
         {
             return;
         }
 
         CollidersInTriggerCount = Math.Max(0, CollidersInTriggerCount - 1);
+    }
+
+    private bool IsRemotePlayerCollider(Collider collider)
+    {
+        if (!CollisionUtility.IsOnRemotePlayerLayer(collider.gameObject))
+        {
+            return false;
+        }
+
+        if (collider.GetComponentInParent<EntityPlayerLocal>() != null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
 

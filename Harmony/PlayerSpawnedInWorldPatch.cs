@@ -19,11 +19,6 @@ public class PlayerSpawnedInWorldPatch
             return;
         }
 
-        if (respawnedPlayer.isEntityRemote)
-        {
-            CollisionUtility.ResetPlayerPhysicsBodyCollisionLayersToDefault(respawnedPlayer);
-        }
-
         CollisionUtility.IgnoreCollisionsBetweenPlayerAndAllOtherPlayers(respawnedPlayer);
     }
 }

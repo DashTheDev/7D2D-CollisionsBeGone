@@ -39,6 +39,8 @@
   <ItemGroup>
     <Compile Include="Data\ReadableOpCodes.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
+    <Compile Include="Harmony\RangedFireShotPatch.cs" />
+    <Compile Include="Harmony\ProjectileMovePatches.cs" />
     <Compile Include="Harmony\EntitySendDetachPatch.cs" />
     <Compile Include="Data\VehicleOverlapTrigger.cs" />
     <Compile Include="Harmony\VehicleSetDrivenPatches.cs" />

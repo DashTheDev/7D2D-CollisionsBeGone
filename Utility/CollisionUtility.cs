@@ -4,14 +4,26 @@ namespace CollisionsBeGone;
 
 public class CollisionUtility
 {
-    public const int DefaultCollisionLayer = 0;
-    public const int PhysicsCollisionLayer = 21;
+    #region Constants
 
-    // For some reason, remote players spawn in with physicsBody collision set to layer 0 on join but layer 21 after death.
-    // Layer 21 breaks the ignore collision. So this method resets the physicsBody back to what it was when they joined the game.
-    public static void ResetPlayerPhysicsBodyCollisionLayersToDefault(EntityPlayer player)
+    private const int DefaultProjectileLayerMask = -538750997;
+    private const int DefaultBulletHitMask = 8;
+    private const int DefaultProjectileHitMask = 80;
+    private const int PhysicsCollisionLayer = 21;
+    private const int LocalPlayerCollisionLayer = 24;
+
+    /// <summary>
+    /// Usually 21 - Physics but in this mod we set remote players to the same as local player
+    /// </summary>
+    private const int RemotePlayerCollisionLayer = LocalPlayerCollisionLayer;
+
+    #endregion
+
+    #region Player Collision
+
+    public static void SetPlayerLayerToRemotePlayerLayer(EntityPlayer player)
     {
-        Utils.SetLayerRecursively(player.gameObject, DefaultCollisionLayer);
+        Utils.SetLayerRecursively(player.gameObject, RemotePlayerCollisionLayer);
     }
 
     public static void IgnoreCollisionsBetweenPlayers(EntityPlayer playerA, EntityPlayer playerB)
@@ -25,11 +37,22 @@ public class CollisionUtility
         }
 
         Physics.IgnoreCollision(playerAController, playerBController, true);
+
+        if (playerB.isEntityRemote)
+        {
+            SetPlayerLayerToRemotePlayerLayer(playerB);
+        }
+
         GeneralUtility.LogLine($"Disabled player collisions between {playerA.PlayerDisplayName} and {playerB.PlayerDisplayName}");
     }
 
     public static void IgnoreCollisionsBetweenPlayerAndAllOtherPlayers(EntityPlayer player)
     {
+        if (player.isEntityRemote)
+        {
+            SetPlayerLayerToRemotePlayerLayer(player);
+        }
+
         foreach (EntityPlayer otherPlayer in GameManager.Instance.World.Players.list)
         {
             if (player.entityId == otherPlayer.entityId)
@@ -37,7 +60,7 @@ public class CollisionUtility
                 continue;
             }
 
-            if (otherPlayer.IsDead())
+            if (player.IsDead() || otherPlayer.IsDead())
             {
                 continue;
             }
@@ -45,4 +68,64 @@ public class CollisionUtility
             IgnoreCollisionsBetweenPlayers(player, otherPlayer);
         }
     }
+
+    #endregion
+
+    #region Other Collision
+
+    public static bool IsOnRemotePlayerLayer(GameObject gameObject)
+    {
+        return gameObject.layer == RemotePlayerCollisionLayer;
+    }
+
+    public static int GetVehicleCollisionLayer(EntityVehicle vehicle)
+    {
+        if (!CollisionsBeGoneMod.Config.DisablePlayerVehicleCollisions)
+        {
+            return PhysicsCollisionLayer;
+        }
+
+        if (vehicle.AttachedMainEntity == null || !vehicle.AttachedMainEntity.isEntityRemote)
+        {
+            return PhysicsCollisionLayer;
+        }
+
+        return RemotePlayerCollisionLayer;
+    }
+
+    public static int GetProjectileLayerMask()
+    {
+        int layerMask = DefaultProjectileLayerMask;
+
+        if (CollisionsBeGoneMod.Config.DisablePlayerProjectileCollisions)
+        {
+            layerMask &= ~(1 << RemotePlayerCollisionLayer);
+        }
+
+        return layerMask;
+    }
+
+    public static int GetBulletHitMask(int maskOverride)
+    {
+        return GetProjectileHitMaskInternal(DefaultBulletHitMask, maskOverride);
+    }
+
+    public static int GetProjectileHitMask(int maskOverride)
+    {
+        return GetProjectileHitMaskInternal(DefaultProjectileHitMask, maskOverride);
+    }
+
+    private static int GetProjectileHitMaskInternal(int originalHitMask, int maskOverride)
+    {
+        int newHitMask = maskOverride == 0 ? originalHitMask : maskOverride;
+
+        if (CollisionsBeGoneMod.Config.DisablePlayerProjectileCollisions)
+        {
+            newHitMask &= ~(1 << RemotePlayerCollisionLayer);
+        }
+
+        return newHitMask;
+    }
+
+    #endregion
 }
