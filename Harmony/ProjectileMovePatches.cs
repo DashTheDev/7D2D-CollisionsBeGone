@@ -38,7 +38,7 @@ public class ProjectileMovePatches
         // Call method: CollisionUtility.GetProjectileLayerMask()
         CodeInstruction getProjectileLayerMaskInstruction = new(ReadableOpCodes.CallMethod, AccessTools.Method(typeof(CollisionUtility), nameof(CollisionUtility.GetProjectileLayerMask)));
 
-        // Code 101 is -538750997 (the layer mask)
+        // Code 101 is -538751005 (the layer mask)
         codes.RemoveAt(101);
         codes.Insert(101, getProjectileLayerMaskInstruction);
 

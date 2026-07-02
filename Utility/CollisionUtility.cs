@@ -6,7 +6,7 @@ public class CollisionUtility
 {
     #region Constants
 
-    private const int DefaultProjectileLayerMask = -538750997;
+    private const int DefaultProjectileLayerMask = -538751005;
     private const int DefaultBulletHitMask = 8;
     private const int DefaultProjectileHitMask = 80;
     private const int PhysicsCollisionLayer = 21;
