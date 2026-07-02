@@ -43,7 +43,7 @@ public class CollisionUtility
             SetPlayerLayerToRemotePlayerLayer(playerB);
         }
 
-        GeneralUtility.LogLine($"Disabled player collisions between {playerA.PlayerDisplayName} and {playerB.PlayerDisplayName}");
+        CollisionsBeGoneMod.Instance.Logger.LogLine($"Disabled player collisions between {playerA.PlayerDisplayName} and {playerB.PlayerDisplayName}");
     }
 
     public static void IgnoreCollisionsBetweenPlayerAndAllOtherPlayers(EntityPlayer player)
@@ -80,7 +80,7 @@ public class CollisionUtility
 
     public static int GetVehicleCollisionLayer(EntityVehicle vehicle)
     {
-        if (!CollisionsBeGoneMod.Config.DisablePlayerVehicleCollisions)
+        if (!CollisionsBeGoneMod.Instance.Config.DisablePlayerVehicleCollisions)
         {
             return PhysicsCollisionLayer;
         }
@@ -97,7 +97,7 @@ public class CollisionUtility
     {
         int layerMask = DefaultProjectileLayerMask;
 
-        if (CollisionsBeGoneMod.Config.DisablePlayerProjectileCollisions)
+        if (CollisionsBeGoneMod.Instance.Config.DisablePlayerProjectileCollisions)
         {
             layerMask &= ~(1 << RemotePlayerCollisionLayer);
         }
@@ -119,7 +119,7 @@ public class CollisionUtility
     {
         int newHitMask = maskOverride == 0 ? originalHitMask : maskOverride;
 
-        if (CollisionsBeGoneMod.Config.DisablePlayerProjectileCollisions)
+        if (CollisionsBeGoneMod.Instance.Config.DisablePlayerProjectileCollisions)
         {
             newHitMask &= ~(1 << RemotePlayerCollisionLayer);
         }

@@ -7,7 +7,7 @@ public class PlayerSpawnedInWorldPatch
 {
     private static void Postfix(GameManager __instance, ClientInfo _cInfo, RespawnType _respawnReason, Vector3i _pos, int _entityId)
     {
-        if (!CollisionsBeGoneMod.Config.DisablePlayerCollisions)
+        if (!CollisionsBeGoneMod.Instance.Config.DisablePlayerCollisions)
         {
             return;
         }

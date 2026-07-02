@@ -6,6 +6,6 @@ public static class LocalisationUtility
 
     public static string GetMoveAwayMessage()
     {
-       return Localization.Get("moveAwayMsg", LanguageName);
+       return Localization.Get("moveAwayMsg", _languageName: LanguageName);
     }
 }

@@ -7,7 +7,7 @@ public class CanCollideWithPatch
 {
     private static bool Prefix(EntityAlive __instance, Entity _other, ref bool __result)
     {
-        if (!CollisionsBeGoneMod.Config.DisablePlayerCollisions)
+        if (!CollisionsBeGoneMod.Instance.Config.DisablePlayerCollisions)
         {
             return true;
         }

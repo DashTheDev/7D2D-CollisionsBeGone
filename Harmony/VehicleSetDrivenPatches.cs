@@ -10,7 +10,7 @@ public class VehicleSetDrivenPatches
 {
     private static void Postfix(EntityVehicle __instance)
     {
-        if (!CollisionsBeGoneMod.Config.PreventVehicleExitOnOverlap)
+        if (!CollisionsBeGoneMod.Instance.Config.PreventVehicleExitOnOverlap)
         {
             return;
         }
@@ -29,7 +29,7 @@ public class VehicleSetDrivenPatches
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = [.. instructions];
-        GeneralUtility.LogTranspilerBefore(nameof(VehicleSetDrivenPatches), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerBefore(nameof(VehicleSetDrivenPatches), codes);
 
         List<CodeInstruction> replacementInstructions =
         [
@@ -44,7 +44,7 @@ public class VehicleSetDrivenPatches
         codes.RemoveAt(53);
         codes.InsertRange(53, replacementInstructions);
 
-        GeneralUtility.LogTranspilerAfter(nameof(VehicleSetDrivenPatches), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerAfter(nameof(VehicleSetDrivenPatches), codes);
         return codes;
     }
 }

@@ -14,7 +14,7 @@ public class ProjectileMovePatches
     public static IEnumerable<CodeInstruction> FireTranspiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = [.. instructions];
-        GeneralUtility.LogTranspilerBefore(nameof(ProjectileMovePatches), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerBefore(nameof(ProjectileMovePatches), codes);
 
         // Arg 1 for method (_hmOverride - arg 4) is already loaded, don't need to load any args
         // Call method: CollisionUtility.GetProjectileHitMask(maskOverride)
@@ -24,7 +24,7 @@ public class ProjectileMovePatches
         codes.RemoveRange(27, 4);
         codes.Insert(27, getProjectileHitMaskInstruction);
 
-        GeneralUtility.LogTranspilerAfter(nameof(ProjectileMovePatches), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerAfter(nameof(ProjectileMovePatches), codes);
         return codes;
     }
 
@@ -33,7 +33,7 @@ public class ProjectileMovePatches
     public static IEnumerable<CodeInstruction> CheckCollisionTranspiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = [.. instructions];
-        GeneralUtility.LogTranspilerBefore(nameof(ProjectileMovePatches), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerBefore(nameof(ProjectileMovePatches), codes);
 
         // Call method: CollisionUtility.GetProjectileLayerMask()
         CodeInstruction getProjectileLayerMaskInstruction = new(ReadableOpCodes.CallMethod, AccessTools.Method(typeof(CollisionUtility), nameof(CollisionUtility.GetProjectileLayerMask)));
@@ -42,7 +42,7 @@ public class ProjectileMovePatches
         codes.RemoveAt(101);
         codes.Insert(101, getProjectileLayerMaskInstruction);
 
-        GeneralUtility.LogTranspilerAfter(nameof(ProjectileMovePatches), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerAfter(nameof(ProjectileMovePatches), codes);
         return codes;
     }
 }

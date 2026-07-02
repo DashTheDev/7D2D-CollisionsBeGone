@@ -7,7 +7,7 @@ public class EntitySendDetachPatch
 {
     private static bool Prefix(Entity __instance)
     {
-        if (!CollisionsBeGoneMod.Config.PreventVehicleExitOnOverlap)
+        if (!CollisionsBeGoneMod.Instance.Config.PreventVehicleExitOnOverlap)
         {
             return true;
         }
@@ -30,7 +30,7 @@ public class EntitySendDetachPatch
         }
 
         localPlayer.ShowTooltip(LocalisationUtility.GetMoveAwayMessage());
-        GeneralUtility.LogLine("Prevented player from exiting vehicle.");
+        CollisionsBeGoneMod.Instance.Logger.LogLine("Prevented player from exiting vehicle.");
         return false;
     }
 }

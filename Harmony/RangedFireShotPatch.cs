@@ -13,7 +13,7 @@ public class RangedFireShotPatch
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = [.. instructions];
-        GeneralUtility.LogTranspilerBefore(nameof(RangedFireShotPatch), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerBefore(nameof(RangedFireShotPatch), codes);
 
         // Arg 1 for method (this.hitmaskOverride - arg 0, field) is already loaded, don't need to load any args
         // Call method: CollisionUtility.GetBulletHitMask(maskOverride)
@@ -30,7 +30,7 @@ public class RangedFireShotPatch
         codes.RemoveAt(101);
         codes.Insert(101, getProjectileLayerMaskInstruction);
 
-        GeneralUtility.LogTranspilerAfter(nameof(RangedFireShotPatch), codes);
+        CollisionsBeGoneMod.Instance.Logger.LogTranspilerAfter(nameof(RangedFireShotPatch), codes);
         return codes;
     }
 }

@@ -46,7 +46,7 @@ public class VehicleOverlapTrigger : MonoBehaviour
             VehicleOverlapTriggerPart triggerPart = colObj.AddComponent<VehicleOverlapTriggerPart>();
             triggerPart.Parent = component;
 
-            if (CollisionsBeGoneMod.Config.DebugColliders)
+            if (CollisionsBeGoneMod.Instance.Config.DebugColliders)
             {
                 GameObject visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 visual.transform.SetParent(colObj.transform);
@@ -57,7 +57,7 @@ public class VehicleOverlapTrigger : MonoBehaviour
             }
         }
 
-        GeneralUtility.LogLine("Attached VehicleOverlapTrigger");
+        CollisionsBeGoneMod.Instance.Logger.LogLine("Attached VehicleOverlapTrigger");
         return component;
     }
 
@@ -73,7 +73,7 @@ public class VehicleOverlapTrigger : MonoBehaviour
         if (triggerComponent != null)
         {
             Destroy(triggerComponent.gameObject);
-            GeneralUtility.LogLine("Detached VehicleOverlapTrigger");
+            CollisionsBeGoneMod.Instance.Logger.LogLine("Detached VehicleOverlapTrigger");
         }
     }
 
